@@ -4,7 +4,7 @@ Streamlit app for AI based image generation
 # Deployment
 
 ## Option 1: Deploy to Azure
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgramhagen%2Fimagen%2Fmain%2Fdeployment%2Fmain.bicep)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgramhagen%2Fimagen%2Fmain%2Fdeployment%2Fmain.json)
 
 ## Option 2: Deploy from Azure CLI
 
