@@ -140,7 +140,7 @@ resource vm_customScript 'Microsoft.Compute/virtualMachines/extensions@2021-04-0
     autoUpgradeMinorVersion: true
     settings: {
       fileUris: [
-        uri(_artifactsLocation, 'deployment/scripts/setup.sh')
+        uri(_artifactsLocation, 'scripts/setup.sh')
       ]
       commandToExecute: 'bash setup.sh'
     }

@@ -184,7 +184,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[uri(parameters('_artifactsLocation'), 'deployment/scripts/setup.sh')]"
+            "[uri(parameters('_artifactsLocation'), 'scripts/setup.sh')]"
           ],
           "commandToExecute": "bash setup.sh"
         }
