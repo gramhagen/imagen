@@ -1,0 +1,31 @@
+VQGAN_MODELS:
+  ADE20K:
+    ade20k.ckpt: https://app.koofr.net/content/links/0f65c2cd-7102-4550-a2bd-07fd383aac9e/files/get/last.ckpt?path=%2F2020-11-20T21-45-44_ade20k_transformer%2Fcheckpoints%2Flast.ckpt
+    ade20k.yaml: https://static.miraheze.org/intercriaturaswiki/b/bf/Ade20k.txt
+  CELEBAHQ:
+    celebahq.ckpt: https://app.koofr.net/content/links/6dddf083-40c8-470a-9360-a9dab2a94e96/files/get/last.ckpt?path=%2F2021-04-23T18-11-19_celebahq_transformer%2Fcheckpoints%2Flast.ckpt&force
+    celebahq.yaml: https://app.koofr.net/content/links/6dddf083-40c8-470a-9360-a9dab2a94e96/files/get/2021-04-23T18-11-19-project.yaml?path=%2F2021-04-23T18-11-19_celebahq_transformer%2Fconfigs%2F2021-04-23T18-11-19-project.yaml&force
+  COCO:
+    coco.ckpt: https://dl.nmkd.de/ai/clip/coco/coco.ckpt
+    coco.yaml: https://dl.nmkd.de/ai/clip/coco/coco.yaml
+  FACESHQ:
+    faceshq.ckpt: https://app.koofr.net/content/links/a04deec9-0c59-4673-8b37-3d696fe63a5d/files/get/last.ckpt?path=%2F2020-11-13T21-41-45_faceshq_transformer%2Fcheckpoints%2Flast.ckpt
+    faceshq.yaml: https://drive.google.com/uc?export=download&id=1fHwGx_hnBtC8nsq7hesJvs-Klv-P0gzT
+  FFHQ:
+    ffhq.ckpt: https://app.koofr.net/content/links/0fc005bf-3dca-4079-9d40-cdf38d42cd7a/files/get/last.ckpt?path=%2F2021-04-23T18-19-01_ffhq_transformer%2Fcheckpoints%2Flast.ckpt&force
+    ffhq.yaml: https://app.koofr.net/content/links/0fc005bf-3dca-4079-9d40-cdf38d42cd7a/files/get/2021-04-23T18-19-01-project.yaml?path=%2F2021-04-23T18-19-01_ffhq_transformer%2Fconfigs%2F2021-04-23T18-19-01-project.yaml&force
+  GUMBEL:
+    vqgan_gumbel_f8_8192.ckpt: https://heibox.uni-heidelberg.de/d/2e5662443a6b4307b470/files/?p=%2Fckpts%2Flast.ckpt&dl=1
+    vqgan_gumbel_f8_8192.yaml: https://heibox.uni-heidelberg.de/d/2e5662443a6b4307b470/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1
+  IMAGENET_1024:
+    vqgan_imagenet_f16_1024.ckpt: https://heibox.uni-heidelberg.de/d/8088892a516d4e3baf92/files/?p=%2Fckpts%2Flast.ckpt&dl=1
+    vqgan_imagenet_f16_1024.yaml: https://heibox.uni-heidelberg.de/d/8088892a516d4e3baf92/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1
+  IMAGENET_16384:
+    vqgan_imagenet_f16_16384.ckpt: https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fckpts%2Flast.ckpt&dl=1
+    vqgan_imagenet_f16_16384.yaml: https://heibox.uni-heidelberg.de/d/a7530b09fed84f80a887/files/?p=%2Fconfigs%2Fmodel.yaml&dl=1
+  SFLCKR:
+    sflckr.ckpt: https://heibox.uni-heidelberg.de/d/73487ab6e5314cb5adba/files/?p=%2Fcheckpoints%2Flast.ckpt&dl=1
+    sflckr.yaml: https://heibox.uni-heidelberg.de/d/73487ab6e5314cb5adba/files/?p=%2Fconfigs%2F2020-11-09T13-31-51-project.yaml&dl=1
+  WIKIART_16384:
+    wikiart_16384.ckpt: http://eaidata.bmk.sh/data/Wikiart_16384/wikiart_f16_16384_8145600.ckpt
+    wikiart_16384.yaml: http://eaidata.bmk.sh/data/Wikiart_16384/wikiart_f16_16384_8145600.yaml

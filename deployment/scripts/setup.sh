@@ -1,8 +1,5 @@
 #!/bin/bash
 
-mkdir /tmp/deploy
-pushd /tmp/deploy
-
 # Install CUDA drivers
 sudo apt-get update
 sudo apt-get install -y build-essential linux-headers-$(uname -r)
@@ -13,7 +10,7 @@ sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/
 sudo apt-get update
 sudo apt-get install -y cuda
 
-# Setup Docker with NVIDIA Drivers
+# Setup Docker with NVIDIA drivers
 curl https://get.docker.com | sh
 sudo systemctl --now enable docker
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
@@ -22,4 +19,12 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
 sudo apt-get update
 sudo apt-get install -y nvidia-docker2
 
-popd
+# Build Docker image
+mkdir /app
+cd /app
+git clone https://github.com/gramhagen/imagen
+cd imagen
+sudo docker build -t imagen .
+
+# Start Docker image
+sudo docker run --gpus all -v /app/imagen/src:/app -p 8501:8501 -d --restart unless-stopped -t imagen

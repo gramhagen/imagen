@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.vscode/
+src/taming/
+src/checkpoints/
+src/output/
+src/steps/

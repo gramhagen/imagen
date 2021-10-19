@@ -12,16 +12,12 @@ param artifactsLocation string = 'https://raw.githubusercontent.com/gramhagen/im
 @description('Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Type of authentication to use on the Virtual Machine. SSH key is recommended.')
-@allowed([
-  'sshPublicKey'
-  'password'
-])
-param authenticationType string = 'sshPublicKey'
-
-@description('SSH Key or password for the Virtual Machine. SSH key is recommended.')
+@description('SSH Key or password for the Virtual Machine. SSH key is required.')
 @secure()
-param adminPasswordOrKey string
+param sshPublicKey string
+
+@description('Size of OS Disk in GB.')
+param osDiskSize int = 128
 
 var prefix = 'Imagen1'
 var publicIPAddressName = '${prefix}PublicIp'
@@ -35,17 +31,6 @@ var imagePublisher = 'canonical'
 var imageOffer = '0001-com-ubuntu-server-focal'
 var ubuntuOSVersion = '20_04-lts-gen2'
 var vmName = '${prefix}VM'
-var linuxConfiguration = {
-  disablePasswordAuthentication: true
-  ssh: {
-    publicKeys: [
-      {
-        path: '/home/${username}/.ssh/authorized_keys'
-        keyData: adminPasswordOrKey
-      }
-    ]
-  }
-}
 
 resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   name: publicIPAddressName
@@ -109,8 +94,18 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-03-01' = {
     osProfile: {
       computerName: vmName
       adminUsername: username
-      adminPassword: adminPasswordOrKey
-      linuxConfiguration: ((authenticationType == 'password') ? json('null') : linuxConfiguration)
+      adminPassword: sshPublicKey
+      linuxConfiguration: {
+        disablePasswordAuthentication: true
+        ssh: {
+          publicKeys: [
+            {
+              path: '/home/${username}/.ssh/authorized_keys'
+              keyData: sshPublicKey
+            }
+          ]
+        }
+      }
     }
     storageProfile: {
       imageReference: {
@@ -122,7 +117,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-03-01' = {
       osDisk: {
         caching: 'ReadWrite'
         createOption: 'FromImage'
-        diskSizeGB: 128
+        diskSizeGB: osDiskSize
       }
     }
     networkProfile: {
@@ -146,7 +141,7 @@ resource vm_customScript 'Microsoft.Compute/virtualMachines/extensions@2021-04-0
     autoUpgradeMinorVersion: true
     settings: {
       fileUris: [
-        uri(artifactsLocation, 'scripts/deploy.sh')
+        uri(artifactsLocation, 'deployment/scripts/setup.sh')
       ]
       commandToExecute: 'bash deploy.sh'
     }
