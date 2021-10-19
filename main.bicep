@@ -23,7 +23,7 @@ param authenticationType string = 'sshPublicKey'
 @secure()
 param adminPasswordOrKey string
 
-var prefix = 'Imagen'
+var prefix = 'Imagen1'
 var publicIPAddressName = '${prefix}PublicIp'
 var publicIPAddressType = 'Dynamic'
 var vnetName = '${prefix}VNet'
@@ -122,6 +122,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2021-03-01' = {
       osDisk: {
         caching: 'ReadWrite'
         createOption: 'FromImage'
+        diskSizeGB: 128
       }
     }
     networkProfile: {
