@@ -6,8 +6,7 @@ param vmSize string = 'Standard_D2s_v3'
 param username string
 
 @description('The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated.')
-//param artifactsLocation string = deployment().properties.templateLink.uri
-param artifactsLocation string = 'https://raw.githubusercontent.com/gramhagen/imagen/main/'
+param _artifactsLocation string = deployment().properties.templateLink.uri
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -19,7 +18,7 @@ param sshPublicKey string
 @description('Size of OS Disk in GB.')
 param osDiskSize int = 128
 
-var prefix = 'Imagen1'
+var prefix = 'Imagen'
 var publicIPAddressName = '${prefix}PublicIp'
 var publicIPAddressType = 'Dynamic'
 var vnetName = '${prefix}VNet'
@@ -141,9 +140,9 @@ resource vm_customScript 'Microsoft.Compute/virtualMachines/extensions@2021-04-0
     autoUpgradeMinorVersion: true
     settings: {
       fileUris: [
-        uri(artifactsLocation, 'deployment/scripts/setup.sh')
+        uri(_artifactsLocation, 'deployment/scripts/setup.sh')
       ]
-      commandToExecute: 'bash deploy.sh'
+      commandToExecute: 'bash setup.sh'
     }
   }
 }

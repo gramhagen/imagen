@@ -22,9 +22,9 @@
         "description": "Username for the Virtual Machine."
       }
     },
-    "artifactsLocation": {
+    "_artifactsLocation": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/gramhagen/imagen/main/",
+      "defaultValue": "[deployment().properties.templateLink.uri]",
       "metadata": {
         "description": "The base URI where artifacts required by this template are located. When the template is deployed using the accompanying scripts, a private location in the subscription will be used and this value will be automatically generated."
       }
@@ -52,7 +52,7 @@
   },
   "functions": [],
   "variables": {
-    "prefix": "Imagen1",
+    "prefix": "Imagen",
     "publicIPAddressName": "[format('{0}PublicIp', variables('prefix'))]",
     "publicIPAddressType": "Dynamic",
     "vnetName": "[format('{0}VNet', variables('prefix'))]",
@@ -184,9 +184,9 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[uri(parameters('artifactsLocation'), 'deployment/scripts/setup.sh')]"
+            "[uri(parameters('_artifactsLocation'), 'deployment/scripts/setup.sh')]"
           ],
-          "commandToExecute": "bash deploy.sh"
+          "commandToExecute": "bash setup.sh"
         }
       },
       "dependsOn": [
