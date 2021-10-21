@@ -12,7 +12,7 @@ Streamlit app for AI based image generation
 RG=<RESOURCE GROUP NAME>
 LOCATION=<RESOURCE GROUP LOCATION>
 az group create -n $RG -l $LOCATION
-az deployment group create -f ./main.bicep -g $RG -p username=$USER -p adminPasswordOrKey=$(cat ~/.ssh/id_rsa.pub)
+az deployment group create -f ./deployment/main.json -g $RG -p username=$USER -p adminPasswordOrKey=$(cat ~/.ssh/id_rsa.pub)
 ```
 
 # Run the application
