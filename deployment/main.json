@@ -1,19 +1,12 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "metadata": {
-    "_generator": {
-      "name": "bicep",
-      "version": "0.4.1008.15138",
-      "templateHash": "17387028784173229955"
-    }
-  },
   "parameters": {
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_D2s_v3",
+      "defaultValue": "Standard_NC6s_v3",
       "metadata": {
-        "description": "Size of vm"
+        "description": "Size of vm."
       }
     },
     "username": {
@@ -39,7 +32,7 @@
     "sshPublicKey": {
       "type": "secureString",
       "metadata": {
-        "description": "SSH Key or password for the Virtual Machine. SSH key is required."
+        "description": "SSH Key for the Virtual Machine."
       }
     },
     "osDiskSize": {
@@ -50,25 +43,29 @@
       }
     }
   },
-  "functions": [],
   "variables": {
     "prefix": "Imagen",
     "publicIPAddressName": "[format('{0}PublicIp', variables('prefix'))]",
     "publicIPAddressType": "Dynamic",
+    "publicIPAddress": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]",
     "vnetName": "[format('{0}VNet', variables('prefix'))]",
     "vnetAddressPrefix": "10.0.0.0/16",
+    "vnet": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]",
     "subnetName": "[format('{0}Subnet', variables('prefix'))]",
     "subnetPrefix": "10.0.0.0/24",
+    "subnet": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]",
     "nicName": "[format('{0}Nic', variables('prefix'))]",
-    "imagePublisher": "canonical",
-    "imageOffer": "0001-com-ubuntu-server-focal",
-    "ubuntuOSVersion": "20_04-lts-gen2",
-    "vmName": "[format('{0}VM', variables('prefix'))]"
+    "nic": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]",
+    "imagePublisher": "microsoft-dsvm",
+    "imageOffer": "ubuntu-1804",
+    "ubuntuOSVersion": "1804-gen2",
+    "vmName": "[format('{0}VM', variables('prefix'))]",
+    "vm": "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
   },
   "resources": [
     {
       "type": "Microsoft.Network/publicIPAddresses",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2020-11-01",
       "name": "[variables('publicIPAddressName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -77,7 +74,7 @@
     },
     {
       "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2020-11-01",
       "name": "[variables('vnetName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -98,7 +95,7 @@
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2021-02-01",
+      "apiVersion": "2020-11-01",
       "name": "[variables('nicName')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -108,18 +105,18 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+                "id": "[variables('publicIPAddress')]"
               },
               "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]"
+                "id": "[variables('subnet')]"
               }
             }
           }
         ]
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]",
-        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+        "[variables('publicIPAddress')]",
+        "[variables('vnet')]"
       ]
     },
     {
@@ -163,18 +160,18 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+              "id": "[variables('nic')]"
             }
           ]
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+        "[variables('nic')]"
       ]
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "apiVersion": "2021-04-01",
+      "apiVersion": "2021-03-01",
       "name": "[format('{0}/{1}', variables('vmName'), 'customScript')]",
       "location": "[parameters('location')]",
       "properties": {
@@ -190,7 +187,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+        "[variables('vm')]"
       ]
     }
   ]

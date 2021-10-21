@@ -1,5 +1,4 @@
 from datetime import datetime as dt
-from multiprocessing import Process
 from pathlib import Path
 from os import kill
 from os.path import exists, getmtime
@@ -9,6 +8,7 @@ import time
 
 import requests
 import streamlit as st
+from torch.multiprocessing import Process, set_start_method
 import yaml
 
 from generate import generate, VQArgs
@@ -22,6 +22,11 @@ OUTPUT_PATH.mkdir(exist_ok=True)
 
 with open("config.yaml", "r") as f:
     config = yaml.safe_load(f.read())
+
+try:
+    set_start_method("spawn")
+except RuntimeError:
+    pass
 
 
 def check_process(pid=None):
@@ -58,10 +63,12 @@ def download_vqgan_model(model: str) -> str:
 
 st.title("Image Generator")
 
-image_txt = st.empty()
 image_loc = st.empty()
-
 loading_txt = st.empty()
+if "output" in st.session_state:
+    image_loc.image(st.session_state["output"])
+else:
+    loading_txt.subheader("")
 bar = st.empty()
 
 with st.sidebar:
@@ -103,26 +110,30 @@ with st.sidebar:
         generator = Process(target=generate, args=(args,), daemon=True)
         generator.start()
         st.session_state["pid"] = generator.pid
+        st.session_state["output"] = args.output
 
     if stop:
         print("Killing process...")
         try:
             kill(st.session_state["pid"], SIGKILL)
-        except OSError:
+        except (KeyError, OSError):
             pass
-        image_txt.empty()
-        loading_txt.empty()
-        bar.empty()
 
     count = 0
     modified_time = 0
     step = 1.0 / (args.max_iterations // args.display_freq)
     while check_process(pid=st.session_state.get("pid")):
-        image_txt.subheader("Image")
         loading_txt.subheader("Generating image...")
         time.sleep(1)
         if exists(args.output) and getmtime(args.output) > modified_time:
-            image_loc.image(args.output)
+            try:
+                image_loc.image(args.output)
+            except:
+                # avoid race condition while image is being written
+                continue
             bar.progress(max(.01, min(1.0, count * step)))
             modified_time = getmtime(args.output)
             count += 1
+    if count > 0:
+        loading_txt.subheader("Image generation finished")
+    bar.empty()

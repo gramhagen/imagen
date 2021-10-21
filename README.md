@@ -20,18 +20,9 @@ az deployment group create -f ./main.bicep -g $RG -p username=$USER -p adminPass
 ```bash
 IP=$(az vm show -d -g $RG -n ImagenVM --query "publicIps" -o tsv)
 ssh $IP -L 8501:localhost:8501
-```
-
-# Build Docker image
-```bash
-git clone https://github.com/gramhagen/imagen
-cd imagen
-sudo docker build -t imagen .
-cd src
-
-# start Docker image
-sudo docker run --gpus all -v `pwd`:/app -p 8501:8501 -d --restart unless-stopped -t imagen
 
 # now open http://localhost:8501 in a browser on your local machine
-```
 
+# check the docker logs
+docker logs -f imagen_st
+```
