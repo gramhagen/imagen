@@ -34,13 +34,6 @@
       "metadata": {
         "description": "SSH Key for the Virtual Machine."
       }
-    },
-    "osDiskSize": {
-      "type": "int",
-      "defaultValue": 128,
-      "metadata": {
-        "description": "Size of OS Disk in GB."
-      }
     }
   },
   "variables": {
@@ -150,11 +143,6 @@
             "offer": "[variables('imageOffer')]",
             "sku": "[variables('ubuntuOSVersion')]",
             "version": "latest"
-          },
-          "osDisk": {
-            "caching": "ReadWrite",
-            "createOption": "FromImage",
-            "diskSizeGB": "[parameters('osDiskSize')]"
           }
         },
         "networkProfile": {
